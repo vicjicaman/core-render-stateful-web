@@ -1,8 +1,13 @@
 {
-  "fullname": "github.com:vicjicaman/node",
-  "version": "1.0.0-master",
+  "fullname": "github.com:vicjicaman/template-node.git",
+  "version": "1.0.3-master",
   "repository": {
-    "url": "github.com:vicjicaman/node",
-    "upstream": {}
+    "url": "github.com:vicjicaman/template-node.git",
+    "upstream": {
+      "template-package": {
+        "url": "github.com:vicjicaman/template-package.git",
+        "version": "1.0.1-master"
+      }
+    }
   }
 }

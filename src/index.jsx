@@ -1,5 +1,3 @@
-import {createNode} from './node.jsx';
+import {foo} from './code';
 
-export {
-  createNode
-};
+export {foo as FooFunction};
