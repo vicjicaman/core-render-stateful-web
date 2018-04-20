@@ -30,7 +30,7 @@ const renderHandler = ({AppRoot, store, graph, watchers}) => {
 
 }
 
-export const RenderStatefull = ({App, url, reducers, watchers}) => {
+export const RenderStateful = ({App, url, reducers, watchers}) => {
 
   const {store, graph, history} = initState({reducers, url})
 
