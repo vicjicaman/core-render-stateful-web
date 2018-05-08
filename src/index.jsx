@@ -30,9 +30,11 @@ const renderHandler = ({AppRoot, store, graph, watchers}) => {
 
 }
 
-export const RenderStateful = ({App, url, reducers, watchers}) => {
+export const RenderStateful = ({App, reducers, watchers, urls: {
+    graphql
+  }}) => {
 
-  const {store, graph, history} = initState({reducers, url})
+  const {store, graph, history} = initState({reducers, url: graphql})
 
   const AppRoot = () => {
     return (<ApolloProvider client={graph}>
