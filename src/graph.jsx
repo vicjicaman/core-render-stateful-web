@@ -11,9 +11,9 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData
 });*/
 
-export default({uri, initState}) => ({
+export default({url, initState}) => ({
   graph: new ApolloClient({
-    link: new HttpLink({uri, credentials: 'include'}),
+    link: new HttpLink({uri: url/*, credentials: 'include'*/}),
     cache: new InMemoryCache(/* { fragmentMatcher } */).restore(initState),
     ssrForceFetchDelay: 100
   })
