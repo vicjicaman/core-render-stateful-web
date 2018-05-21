@@ -1,5 +1,6 @@
 import {ApolloClient} from 'apollo-client';
 import {ApolloLink} from 'apollo-link';
+import {withClientState} from 'apollo-link-state';
 import {HttpLink} from 'apollo-link-http';
 import {InMemoryCache, IntrospectionFragmentMatcher} from 'apollo-cache-inmemory';
 import {getOperationAST} from 'graphql';
@@ -11,10 +12,29 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData
 });*/
 
-export default({url, initState}) => ({
-  graph: new ApolloClient({
-    link: new HttpLink({uri: url/*, credentials: 'include'*/}),
-    cache: new InMemoryCache(/* { fragmentMatcher } */).restore(initState),
-    ssrForceFetchDelay: 100
+//import { defaults, resolvers } from './resolvers/todos';
+
+export default({
+  url,
+  initState,
+  client: {
+    resolvers,
+    defaults,
+    typeDefs
+  }
+}) => {
+
+  const cache = new InMemoryCache(/* { fragmentMatcher } */).restore(initState)
+
+  const stateLink = withClientState({resolvers, defaults, cache, typeDefs});
+
+  return ({
+    graph: new ApolloClient({
+      link: stateLink.concat(new HttpLink({
+        uri: url/*, credentials: 'include'*/
+      })),
+      cache: new InMemoryCache(/* { fragmentMatcher } */).restore(initState) //,
+      //ssrForceFetchDelay: 100
+    })
   })
-})
+}

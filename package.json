@@ -49,6 +49,7 @@
     "prepublish": "yarn build:prod"
   },
   "dependencies": {
+    "apollo-link-state": "^0.4.1",
     "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
