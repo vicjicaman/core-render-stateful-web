@@ -15,6 +15,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 //import { defaults, resolvers } from './resolvers/todos';
 
 export default({
+  introspectionResult,
   url,
   initState,
   client: {
@@ -24,7 +25,11 @@ export default({
   }
 }) => {
 
-  const cache = new InMemoryCache(/* { fragmentMatcher } */).restore(initState)
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData: introspectionResult
+  });
+
+  const cache = new InMemoryCache( { fragmentMatcher }).restore(initState)
 
   const stateLink = withClientState({resolvers, defaults, cache, typeDefs});
 
@@ -33,7 +38,7 @@ export default({
       link: stateLink.concat(new HttpLink({
         uri: url/*, credentials: 'include'*/
       })),
-      cache: new InMemoryCache(/* { fragmentMatcher } */).restore(initState) //,
+      cache //,
       //ssrForceFetchDelay: 100
     })
   })

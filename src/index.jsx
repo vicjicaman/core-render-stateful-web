@@ -9,9 +9,9 @@ import {all, fork} from 'redux-saga/effects';
 import configureStore from './store.jsx';
 import configureGraphClient from './graph.jsx';
 
-const initState = ({reducers, url, clientState}) => {
+const initState = ({reducers, url, clientState, introspectionResult}) => {
   const {store, history} = configureStore({reducers, initState: window.__PRELOADED_STATE__});
-  const {graph} = configureGraphClient({client: clientState, url, initState: window.__APOLLO_STATE__});
+  const {graph} = configureGraphClient({client: clientState, url, initState: window.__APOLLO_STATE__, introspectionResult});
 
   return {store, history, graph}
 }
@@ -30,11 +30,11 @@ const renderHandler = ({AppRoot, store, graph, watchers}) => {
 
 }
 
-export const RenderStateful = ({clientState, App, reducers, watchers, urls: {
+export const RenderStateful = ({introspectionResult, clientState, App, reducers, watchers, urls: {
     graphql
   }}) => {
 
-  const {store, graph, history} = initState({reducers, url: graphql, clientState})
+  const {store, graph, history} = initState({reducers, url: graphql, clientState, introspectionResult})
 
   const AppRoot = () => {
     return (<ApolloProvider client={graph}>
