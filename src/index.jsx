@@ -6,6 +6,8 @@ import {ConnectedRouter} from 'react-router-redux';
 import {ApolloProvider} from 'react-apollo';
 import {all, fork} from 'redux-saga/effects';
 
+import {EventListener} from './events/EventListener'
+
 import configureStore from './store.jsx';
 import configureGraphClient from './graph.jsx';
 
@@ -30,18 +32,28 @@ const renderHandler = ({AppRoot, store, graph, watchers}) => {
 
 }
 
-export const RenderStateful = ({introspectionResult, clientState, App, reducers, watchers, urls: {
-    graphql
-  }}) => {
+export const RenderStateful = ({
+  introspectionResult,
+  clientState,
+  App,
+  reducers,
+  watchers,
+  urls: {
+    graphql,
+    events
+  }
+}) => {
 
   const {store, graph, history} = initState({reducers, url: graphql, clientState, introspectionResult})
 
   const AppRoot = () => {
     return (<ApolloProvider client={graph}>
       <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <App/>
-        </ConnectedRouter>
+        <EventListener url={events} stream={['commands']} onEvent={(cache, {stream, events}) => {}}>
+          <ConnectedRouter history={history}>
+            <App/>
+          </ConnectedRouter>
+        </EventListener>
       </Provider>
     </ApolloProvider>)
   };
